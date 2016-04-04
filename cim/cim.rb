@@ -2,7 +2,7 @@
 
 require 'pp'
 require 'set'
-require './parser.rb'
+require './cim/parser.rb'
 include Parser
 
 class State
@@ -145,16 +145,16 @@ def are_particles_neighbors(p1, p2, rc)
   Math.hypot(p1.x - p2.x, p1.y - p2.y) - p1.radius - p2.radius < rc
 end
 
+# Main method
+def state(m, rc)
+  raise ArgumentError, "The amount of cells and particle interaction radius are both required" if m == 0 || rc == 0
 
-m = ARGV[0].to_i
-rc = ARGV[1].to_f
-raise ArgumentError, "The amount of cells and particle interaction radius are both required" if m == 0 || rc == 0
+  state = parse_input("./randstatic.txt", "./randdynamic.txt", m)
+  rmax = state.particles.max {|a, b| a.radius <=> b.radius}.radius
+  raise ArgumentError, "Wrong argument value: L/M > rc + 2*rmax" if state.cell_size <= rc + 2 * rmax
 
-state = parse_input("../randstatic.txt", "../randdynamic.txt", m)
-rmax = state.particles.max {|a, b| a.radius <=> b.radius}.radius
-raise ArgumentError, "Wrong argument value: L/M > rc + 2*rmax" if state.cell_size <= rc + 2 * rmax
+  align_grid(state)
+  cell_index_method(state, rc, true)
 
-with_boundaries = ARGV[2].to_s == "b" ? true : false
-
-align_grid(state)
-cell_index_method(state, rc, with_boundaries)
+  return state
+end

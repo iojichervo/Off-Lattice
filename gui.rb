@@ -27,9 +27,22 @@ Shoes.app title: "Off Lattice" do
       @v.text = 0.03
     end
 
+    stack do
+      para "Radius interaction (rc)"
+      @rc = edit_line
+      @rc.text = 1
+    end
+
+    stack do
+      para "Cells in a row (M)"
+      @m = edit_line
+      @m.text = 10
+    end
+
     stack(margin_top: 8) do
       button("Submit") do
         `ruby cim/randomstate.rb #{@n.text} #{@l.text} #{@r.text} #{@v.text}`
+        `ruby offlattice.rb #{@m.text} #{@rc.text} b`
       end
     end
   end
