@@ -20,8 +20,8 @@ module Parser
         particle_components = line.split(" ")
         particles[index - 1].x = particle_components[0].to_f
         particles[index - 1].y = particle_components[1].to_f
-        particles[index - 1].vx = particle_components[2].to_f
-        particles[index - 1].vy = particle_components[3].to_f
+        #particles[index - 1].vx = particle_components[2].to_f
+        #particles[index - 1].vy = particle_components[3].to_f
       end
     end
 

@@ -20,8 +20,8 @@ class State
 end
 
 class Particle
-  attr_reader :id, :color, :radius
-  attr_accessor :x, :y, :vx, :vy
+  attr_reader :id, :color, :radius, :neighbors
+  attr_accessor :x, :y, :phi
 
   @@ids = 0
 
@@ -32,8 +32,7 @@ class Particle
       @color = color
       @x = nil
       @y = nil
-      @vx = nil
-      @vy = nil
+      @phi = nil
       @neighbors = Set.new
   end
 
