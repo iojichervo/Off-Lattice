@@ -1,54 +1,57 @@
 #!/usr/bin/env ruby
 
-Shoes.app title: "Off Lattice" do
-  background white
+Shoes.app(title: "Off Lattice", width: 500, height: 400) do
+  background(white)
   stack(margin: 8) do
-    stack do
-      para "Particles amount (N)"
-      @n = edit_line
-      @n.text = 100
-    end
+    title("Off Lattice")
+  
+    flow do
+      stack(width: '50%') do
+        para "Particles amount (N)"
+        @n = edit_line
+        @n.text = 100
 
-    stack do
-      para "Grid length (L)"
-      @l = edit_line
-      @l.text = 20
-    end
+        para "Grid length (L)"
+        @l = edit_line
+        @l.text = 20
 
-    stack do
-      para "Particles radius (r)"
-      @r = edit_line
-      @r.text = 0
-    end
+        para "Particles radius (r)"
+        @r = edit_line
+        @r.text = 0
 
-    stack do
-      para "Initial speed (v)"
-      @v = edit_line
-      @v.text = 0.03
-    end
+        para "Initial speed (v)"
+        @v = edit_line
+        @v.text = 0.03
+      end
+      
+      stack(width: '50%') do
+        para "Radius interaction (rc)"
+        @rc = edit_line
+        @rc.text = 1
 
-    stack do
-      para "Radius interaction (rc)"
-      @rc = edit_line
-      @rc.text = 1
-    end
+        para "Cells in a row (M)"
+        @m = edit_line
+        @m.text = 10
 
-    stack do
-      para "Cells in a row (M)"
-      @m = edit_line
-      @m.text = 10
-    end
+        para "Time (t)"
+        @t = edit_line
+        @t.text = 200
 
-    stack do
-      para "Time (t)"
-      @t = edit_line
-      @t.text = 200
+        para "Noise (n)"
+        @noise = edit_line
+        @noise.text = 1
+      end
     end
 
     stack(margin_top: 8) do
       button("Submit") do
         `ruby cim/randomstate.rb #{@n.text} #{@l.text} #{@r.text} #{@v.text}`
-        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text} #{@t.text} #{@l.text}`
+        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text} #{@t.text} #{@l.text} #{@noise.text}`
+        Shoes.app(title: "Finished!", width: 180, height: 60) do
+          button("Done", margin_left: "60", margin_top: "15") do
+            close()
+          end
+        end
       end
     end
   end

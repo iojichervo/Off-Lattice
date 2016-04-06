@@ -12,7 +12,7 @@ def set_initial_velocities(state)
 end
 
 # Moves the particles in a state to the next state in a Vicsek model simulation.
-def move(state, speed, n, l)
+def move(state, speed, l, noise)
 	particles = state.particles
 	
   particles.each_with_index do |particle, index|
@@ -33,13 +33,14 @@ def move(state, speed, n, l)
     particle.x += l if particle.x < 0
     particle.y += l if particle.y < 0
 		
-    particle.phi = Math.atan2(sin_tot, cos_tot) + rand(-0.5..0.5)
+    noise /= 2
+    particle.phi = Math.atan2(sin_tot, cos_tot) + rand(-noise..noise)
 	end
 end
 
-def print_next_state(state, speed, mode, second)
+def print_next_state(state, n, speed, mode, second)
     file = File.open("randdynamic.txt", mode)
-    file.write("100\n")
+    file.write("#{n}\n")
     file.write("#{second}\n")
     state.particles.each do |particle|
       vx = speed * Math.cos(particle.phi)
@@ -52,18 +53,19 @@ end
 m = ARGV[0].to_i
 rc = ARGV[1].to_f
 v = ARGV[2].to_f
-n = ARGV[3].to_f
+n = ARGV[3].to_i
 times = ARGV[4].to_i
 l = ARGV[5].to_f
+noise = ARGV[6].to_f
 
 state = state(m, rc)
 set_initial_velocities(state)
-print_next_state(state, v, 'w', 0)
+print_next_state(state, n, v, 'w', 0)
 
 times.times do |t|
-  move(state, v, n, l)
+  move(state, v, l, noise)
 
-  print_next_state(state, v, 'a', t + 1)
+  print_next_state(state, n, v, 'a', t + 1)
 
   state.grid = {}
   align_grid(state)
