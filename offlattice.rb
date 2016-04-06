@@ -14,31 +14,32 @@ end
 # Moves the particles in a state to the next state in a Vicsek model simulation.
 def move(state, speed, n, l)
 	particles = state.particles
-	updated_phis = []
-  sin_tot = 0
-  cos_tot = 0
-	particles.each_with_index do |particle, index|
-		count = particle.neighbors.count
-		particle.neighbors.each do |neighbor|
+	
+  particles.each_with_index do |particle, index|
+    sin_tot = 0
+    cos_tot = 0
+
+    particle.neighbors.each do |neighbor|
 			sin_tot += Math.sin(neighbor.phi)
       cos_tot += Math.cos(neighbor.phi)
 		end
-		updated_phis[index] = Math.atan2(sin_tot/count, cos_tot/count) + n/2 * rand(-1..1)
-	end
 
-	particles.each_with_index do |particle, index|
-		particle.x += speed * Math.sin(particle.phi)
-		particle.y += speed * Math.cos(particle.phi)
+    particle.x += speed * Math.cos(particle.phi)
+    particle.y += speed * Math.sin(particle.phi)
+    
     particle.x -= l if particle.x > l
     particle.y -= l if particle.y > l
+    
     particle.x += l if particle.x < 0
     particle.y += l if particle.y < 0
-		particle.phi = updated_phis[index]
+		
+    particle.phi = Math.atan2(sin_tot, cos_tot) + rand(-0.5..0.5)
 	end
 end
 
 def print_next_state(state, speed, mode, second)
     file = File.open("randdynamic.txt", mode)
+    file.write("100\n")
     file.write("#{second}\n")
     state.particles.each do |particle|
       vx = speed * Math.cos(particle.phi)

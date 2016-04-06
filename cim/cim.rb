@@ -75,15 +75,17 @@ def align_grid(state)
 
     state.grid = add_particle(state.grid, state.cell_size, x, y, particle)
 
-    state.grid = add_particle(state.grid, state.cell_size, x - radius, y, particle)
-    state.grid = add_particle(state.grid, state.cell_size, x, y - radius, particle)
-    state.grid = add_particle(state.grid, state.cell_size, x + radius, y, particle)
-    state.grid = add_particle(state.grid, state.cell_size, x, y + radius, particle)
+    if radius != 0 then
+      state.grid = add_particle(state.grid, state.cell_size, x - radius, y, particle)
+      state.grid = add_particle(state.grid, state.cell_size, x, y - radius, particle)
+      state.grid = add_particle(state.grid, state.cell_size, x + radius, y, particle)
+      state.grid = add_particle(state.grid, state.cell_size, x, y + radius, particle)
 
-    state.grid = add_particle(state.grid, state.cell_size, x + (0.5 * radius), y + (0.5 * radius), particle)
-    state.grid = add_particle(state.grid, state.cell_size, x - (0.5 * radius), y - (0.5 * radius), particle)
-    state.grid = add_particle(state.grid, state.cell_size, x - (0.5 * radius), y + (0.5 * radius), particle)
-    state.grid = add_particle(state.grid, state.cell_size, x + (0.5 * radius), y - (0.5 * radius), particle)
+      state.grid = add_particle(state.grid, state.cell_size, x + (0.5 * radius), y + (0.5 * radius), particle)
+      state.grid = add_particle(state.grid, state.cell_size, x - (0.5 * radius), y - (0.5 * radius), particle)
+      state.grid = add_particle(state.grid, state.cell_size, x - (0.5 * radius), y + (0.5 * radius), particle)
+      state.grid = add_particle(state.grid, state.cell_size, x + (0.5 * radius), y - (0.5 * radius), particle)
+    end
   end
 
   return state
@@ -141,6 +143,7 @@ def evaluate_neighbors(grid, cell, other_cell, rc)
       other_particles.each do |p2|
         if are_particles_neighbors(p1, p2, rc)
           p1.add_neighbor(p2)
+          p2.add_neighbor(p1)
         end
       end
     end

@@ -12,7 +12,7 @@ Shoes.app title: "Off Lattice" do
     stack do
       para "Grid length (L)"
       @l = edit_line
-      @l.text = 30      
+      @l.text = 20
     end
 
     stack do
@@ -42,7 +42,7 @@ Shoes.app title: "Off Lattice" do
     stack do
       para "Time (t)"
       @t = edit_line
-      @t.text = 20
+      @t.text = 200
     end
 
     stack(margin_top: 8) do
