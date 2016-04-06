@@ -43,6 +43,10 @@ class Particle
   def add_neighbor(particle)
     @neighbors.add(particle)
   end
+
+  def reset_neighbors
+    @neighbors = Set.new
+  end
 end
 
 class Cell
@@ -102,6 +106,10 @@ end
 def cell_index_method(state, rc, with_boundaries)
   grid = state.grid
   m = (state.grid_size / state.cell_size).round
+
+  state.particles do |p|
+    p.reset_neighbors
+  end
 
   grid.keys.each do |cell|
     evaluate_neighbors(grid, cell, cell, rc)

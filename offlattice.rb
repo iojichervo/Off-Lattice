@@ -12,9 +12,11 @@ def set_initial_velocities(state)
 end
 
 # Moves the particles in a state to the next state in a Vicsek model simulation.
-def move(state, speed, n)
+def move(state, speed, n, l)
 	particles = state.particles
 	updated_phis = []
+  sin_tot = 0
+  cos_tot = 0
 	particles.each_with_index do |particle, index|
 		count = particle.neighbors.count
 		particle.neighbors.each do |neighbor|
@@ -27,22 +29,42 @@ def move(state, speed, n)
 	particles.each_with_index do |particle, index|
 		particle.x += speed * Math.sin(particle.phi)
 		particle.y += speed * Math.cos(particle.phi)
+    particle.x -= l if particle.x > l
+    particle.y -= l if particle.y > l
+    particle.x += l if particle.x < 0
+    particle.y += l if particle.y < 0
 		particle.phi = updated_phis[index]
 	end
+end
 
-	pp updated_phis
+def print_next_state(state, speed, mode, second)
+    file = File.open("randdynamic.txt", mode)
+    file.write("#{second}\n")
+    state.particles.each do |particle|
+      vx = speed * Math.cos(particle.phi)
+      vy = speed * Math.sin(particle.phi)
+      file.write("#{particle.x} #{particle.y} #{vx} #{vy}\n")
+    end
+    file.close
 end
 
 m = ARGV[0].to_i
 rc = ARGV[1].to_f
 v = ARGV[2].to_f
 n = ARGV[3].to_f
+times = ARGV[4].to_i
+l = ARGV[5].to_f
 
 state = state(m, rc)
 set_initial_velocities(state)
+print_next_state(state, v, 'w', 0)
 
-pp state
+times.times do |t|
+  move(state, v, n, l)
 
-move(state, v, n)
+  print_next_state(state, v, 'a', t + 1)
 
-pp state
+  state.grid = {}
+  align_grid(state)
+  cell_index_method(state, rc, true)
+end

@@ -18,7 +18,7 @@ Shoes.app title: "Off Lattice" do
     stack do
       para "Particles radius (r)"
       @r = edit_line
-      @r.text = 1
+      @r.text = 0
     end
 
     stack do
@@ -39,10 +39,16 @@ Shoes.app title: "Off Lattice" do
       @m.text = 10
     end
 
+    stack do
+      para "Time (t)"
+      @t = edit_line
+      @t.text = 20
+    end
+
     stack(margin_top: 8) do
       button("Submit") do
         `ruby cim/randomstate.rb #{@n.text} #{@l.text} #{@r.text} #{@v.text}`
-        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text}`
+        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text} #{@t.text} #{@l.text}`
       end
     end
   end
