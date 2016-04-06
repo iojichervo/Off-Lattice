@@ -16,12 +16,10 @@ def move(state, speed, n)
 	particles = state.particles
 	updated_phis = []
 	particles.each_with_index do |particle, index|
-		sin_tot = Math.sin(particle.phi)
-		cos_tot = Math.cos(particle.phi)
-		count = particle.neighbors.count + 1
+		count = particle.neighbors.count
 		particle.neighbors.each do |neighbor|
 			sin_tot += Math.sin(neighbor.phi)
-         	cos_tot += Math.cos(neighbor.phi)
+      cos_tot += Math.cos(neighbor.phi)
 		end
 		updated_phis[index] = Math.atan2(sin_tot/count, cos_tot/count) + n/2 * rand(-1..1)
 	end

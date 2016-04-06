@@ -42,7 +42,7 @@ Shoes.app title: "Off Lattice" do
     stack(margin_top: 8) do
       button("Submit") do
         `ruby cim/randomstate.rb #{@n.text} #{@l.text} #{@r.text} #{@v.text}`
-        `ruby offlattice.rb #{@m.text} #{@rc.text} b`
+        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text}`
       end
     end
   end
