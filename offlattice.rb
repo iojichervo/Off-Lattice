@@ -2,6 +2,7 @@
 
 require './cim/cim.rb'
 require 'pp'
+require 'matrix'
 
 # Sets the initial velocity of particles in a Vicsek model simulation.
 def set_initial_velocities(state)
@@ -71,3 +72,15 @@ times.times do |t|
   align_grid(state)
   cell_index_method(state, rc, true)
 end
+
+# Calculate va
+va = Vector[0, 0]
+state.particles.each do |particle|
+  va += Vector[v * Math.cos(particle.phi), v * Math.sin(particle.phi)]
+
+end
+
+va = va.magnitude / (n * v)
+rho = n / l**2
+
+puts "eta: #{noise} rho: #{rho} va: #{va.round(4)}"

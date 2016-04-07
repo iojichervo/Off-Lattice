@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-Shoes.app(title: "Off Lattice", width: 500, height: 400) do
+Shoes.app(title: "Off Lattice", width: 500, height: 425) do
   background(white)
   stack(margin: 8) do
     title("Off Lattice")
@@ -37,22 +37,27 @@ Shoes.app(title: "Off Lattice", width: 500, height: 400) do
         @t = edit_line
         @t.text = 200
 
-        para "Noise (n)"
+        para "Noise (eta)"
         @noise = edit_line
         @noise.text = 1
       end
     end
 
     stack(margin_top: 8) do
+
       button("Submit") do
         `ruby cim/randomstate.rb #{@n.text} #{@l.text} #{@r.text} #{@v.text}`
-        `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text} #{@t.text} #{@l.text} #{@noise.text}`
+        @ret = `ruby offlattice.rb #{@m.text} #{@rc.text} #{@v.text} #{@n.text} #{@t.text} #{@l.text} #{@noise.text}`
+        @feedback.text = @ret
         Shoes.app(title: "Finished!", width: 180, height: 60) do
           button("Done", margin_left: "60", margin_top: "15") do
             close()
           end
         end
       end
+
+      @feedback = para
     end
+
   end
 end
